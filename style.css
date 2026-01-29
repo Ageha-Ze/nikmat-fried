@@ -69,17 +69,33 @@ ul {
 }
 
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: var(--font-heading);
     font-weight: 600;
     line-height: 1.2;
     color: var(--dark);
 }
 
-h1 { font-size: 4rem; }
-h2 { font-size: 3rem; }
-h3 { font-size: 2rem; }
-h4 { font-size: 1.5rem; }
+h1 {
+    font-size: 4rem;
+}
+
+h2 {
+    font-size: 3rem;
+}
+
+h3 {
+    font-size: 2rem;
+}
+
+h4 {
+    font-size: 1.5rem;
+}
 
 /* =========================================
    HEADER & NAVIGATION
@@ -245,7 +261,7 @@ h4 { font-size: 1.5rem; }
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, rgba(196, 30, 58, 0.6), rgba(196, 30, 58, 0.4));
+    background: linear-gradient(to bottom, rgba(44, 24, 16, 0.6), rgba(44, 24, 16, 0.4));
 }
 
 .hero-content {
@@ -542,6 +558,46 @@ h4 { font-size: 1.5rem; }
 }
 
 /* =========================================
+   DRINKS SECTION (Special Layout)
+   ========================================= */
+
+#drinks {
+    background: var(--cream);
+}
+
+.drinks-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    margin-top: 60px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.drinks-item {
+    border: 3px solid var(--primary-color);
+    background: var(--white);
+    box-shadow: 0 8px 30px rgba(196, 30, 58, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.drinks-item .menu-image {
+    height: 400px;
+}
+
+.drinks-item .menu-overlay {
+    background: linear-gradient(to bottom, rgba(196, 30, 58, 0.85), rgba(44, 24, 16, 0.95));
+}
+
+.drinks-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 45px rgba(196, 30, 58, 0.3);
+    border-color: var(--secondary-color);
+}
+
+/* =========================================
    GALLERY SECTION
    ========================================= */
 
@@ -740,6 +796,7 @@ h4 { font-size: 1.5rem; }
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -747,9 +804,12 @@ h4 { font-size: 1.5rem; }
 }
 
 @keyframes float {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0);
     }
+
     50% {
         transform: translateY(-10px);
     }
@@ -767,23 +827,23 @@ h4 { font-size: 1.5rem; }
     .hero-title {
         font-size: 4rem;
     }
-    
+
     .section-title {
         font-size: 2.5rem;
     }
-    
+
     .about-grid {
         gap: 50px;
     }
-    
+
     .menu-grid {
         grid-template-columns: repeat(3, 1fr);
     }
-    
+
     .gallery-grid {
         grid-template-columns: repeat(3, 1fr);
     }
-    
+
     .footer-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -793,7 +853,7 @@ h4 { font-size: 1.5rem; }
     .hamburger {
         display: flex;
     }
-    
+
     .nav-menu {
         position: fixed;
         top: 80px;
@@ -807,64 +867,73 @@ h4 { font-size: 1.5rem; }
         gap: 30px;
         transition: all 0.3s ease;
     }
-    
+
     .nav-menu.active {
         left: 0;
     }
-    
+
     .phone-link {
         display: none;
     }
-    
+
     .hero {
         height: 70vh;
     }
-    
+
     .hero-title {
         font-size: 2.5rem;
     }
-    
+
     .hero-tagline {
         font-size: 1.2rem;
     }
-    
+
     .poster-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .about-grid {
         grid-template-columns: 1fr;
         gap: 40px;
     }
-    
+
     .about-image {
         order: -1;
     }
-    
+
     .section-title {
         font-size: 2rem;
     }
-    
+
     .menu-grid {
         grid-template-columns: 1fr;
     }
-    
+
+    .drinks-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .drinks-item .menu-image {
+        height: 350px;
+    }
+
     .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
         grid-auto-rows: 250px;
     }
-    
+
     .gallery-tall,
     .gallery-wide {
         grid-row: span 1;
         grid-column: span 1;
     }
-    
+
     .footer-grid {
         grid-template-columns: 1fr;
         gap: 40px;
     }
-    
+
     .whatsapp-float {
         bottom: 20px;
         right: 20px;
@@ -873,21 +942,26 @@ h4 { font-size: 1.5rem; }
 }
 
 @media (max-width: 480px) {
-    h1 { font-size: 2rem; }
-    h2 { font-size: 1.8rem; }
-    
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+    }
+
     .hero-title {
         font-size: 2rem;
     }
-    
+
     .section-title {
         font-size: 1.8rem;
     }
-    
+
     .whatsapp-text {
         display: none;
     }
-    
+
     .whatsapp-float {
         width: 60px;
         height: 60px;
@@ -905,10 +979,26 @@ h4 { font-size: 1.5rem; }
     text-align: center;
 }
 
-.mt-1 { margin-top: 1rem; }
-.mt-2 { margin-top: 2rem; }
-.mt-3 { margin-top: 3rem; }
+.mt-1 {
+    margin-top: 1rem;
+}
 
-.mb-1 { margin-bottom: 1rem; }
-.mb-2 { margin-bottom: 2rem; }
-.mb-3 { margin-bottom: 3rem; }
+.mt-2 {
+    margin-top: 2rem;
+}
+
+.mt-3 {
+    margin-top: 3rem;
+}
+
+.mb-1 {
+    margin-bottom: 1rem;
+}
+
+.mb-2 {
+    margin-bottom: 2rem;
+}
+
+.mb-3 {
+    margin-bottom: 3rem;
+}
