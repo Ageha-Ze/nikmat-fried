@@ -3,10 +3,10 @@
 // =========================================
 
 // Initialize the website
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Initialize loading screen
     initLoadingScreen();
-    
+
     // Initialize other components
     initHeroSlider();
     initNavigation();
@@ -19,23 +19,23 @@ document.addEventListener('DOMContentLoaded', function() {
 // Loading Screen Function
 function initLoadingScreen() {
     // Hide loading screen after 1 second to ensure animation is visible
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.classList.add('loaded');
-        
+
         // Remove loading screen from DOM after transition
-        setTimeout(function() {
+        setTimeout(function () {
             const loadingScreen = document.querySelector('.loading-screen');
             if (loadingScreen) {
                 loadingScreen.remove();
             }
         }, 500);
     }, 1000);
-    
+
     // Also hide loading screen when page is fully loaded
-    window.addEventListener('load', function() {
+    window.addEventListener('load', function () {
         document.body.classList.add('loaded');
-        
-        setTimeout(function() {
+
+        setTimeout(function () {
             const loadingScreen = document.querySelector('.loading-screen');
             if (loadingScreen) {
                 loadingScreen.remove();
@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', function () {
         { id: 12, name: 'Palm Sugar', price: 10000 },
         { id: 13, name: 'Iced Latte', price: 10000 },
         { id: 14, name: 'Iced Almond', price: 10000 },
-        { id: 15, name: 'Chocopresso', price: 10000 }
+        { id: 15, name: 'cocopresso', price: 10000 }
     ];
 
     // Menu Data (sistem lama - tidak dipakai lagi)
