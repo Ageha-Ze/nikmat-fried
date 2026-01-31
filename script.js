@@ -642,7 +642,18 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        let message = `*PESANAN BARU - NIKMAT FRIED CHICKEN*\n\nProduk:\n`;
+        const customerName = document.getElementById('customer-name').value.trim();
+        const customerAddress = document.getElementById('customer-address').value.trim();
+
+        if (!customerName || !customerAddress) {
+            alert('Mohon lengkapi nama dan alamat terlebih dahulu!');
+            return;
+        }
+
+        let message = `*PESANAN BARU - NIKMAT FRIED CHICKEN*\n\n`;
+        message += `Atas Nama: ${customerName}\n`;
+        message += `Alamat: ${customerAddress}\n\n`;
+        message += `Pesanan:\n`;
 
         let total = 0;
         let itemNumber = 1;
@@ -686,6 +697,11 @@ document.addEventListener('DOMContentLoaded', function () {
             catalogCart = [];
             localStorage.setItem('catalogCart', JSON.stringify(catalogCart));
             updateCatalogCartDisplay();
+            
+            // Clear customer information fields
+            document.getElementById('customer-name').value = '';
+            document.getElementById('customer-address').value = '';
+            
             showNotification('Keranjang berhasil dikosongkan');
         }
     };
