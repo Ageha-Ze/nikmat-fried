@@ -1,0 +1,367 @@
+
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pawon Sakha - Spesial Sambel Cakalang</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Poppins', sans-serif; background-color: #f7f5f2; }
+        .text-pawon-primary { color: #c2410c; }
+        .bg-pawon-primary { background-color: #c2410c; }
+        .border-pawon-primary { border-color: #c2410c; }
+        .ring-pawon-primary:focus { --tw-ring-color: #c2410c; }
+        .bg-pawon-secondary { background-color: #fde68a; }
+        .bg-pawon-cart { background-color: #ffffff; }
+        .modal { display: none; }
+        .modal.flex { display: flex; }
+        /* Animasi halus untuk hover */
+        .step-card { transition: all 0.3s ease; }
+        .step-card:hover { transform: translateY(-3px); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="closed-overlay" class="modal fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-75">
+        <div class="text-center">
+            <h2 class="text-4xl font-extrabold text-white mb-4">Mohon Maaf, Restoran Sedang Tutup</h2>
+            <p class="text-xl text-gray-300">Silakan kembali lagi nanti.</p>
+        </div>
+    </div>
+
+    <header class="bg-white shadow-md sticky top-0 z-40">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+            <div class="text-2xl font-bold text-pawon-primary">Pawon <span class="text-orange-800">Sakha</span></div>
+            <div class="flex items-center space-x-4">
+                <a href="./admin.html" title="Admin Panel" class="p-2 text-gray-600 hover:text-orange-700"><i class="fas fa-cog"></i></a>
+                <button id="toggle-cart-btn" class="relative p-2 rounded-full bg-pawon-secondary hover:bg-yellow-400 transition duration-300">
+                    <i class="fas fa-shopping-cart text-gray-800"></i>
+                    <span id="cart-count" class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <section>
+            <div class="relative bg-pawon-primary text-white p-8 rounded-xl overflow-hidden mb-8">
+                <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('https://images.unsplash.com/photo-1626082894353-500350a89f9e?auto=format&fit=crop&q=80');"></div>
+                <div class="relative z-10">
+                    <h1 class="text-3xl md:text-4xl font-extrabold mb-2">Spesial Sambel Cakalang Pawon Sakha</h1>
+                    <p class="text-md md:text-lg">Nikmati kelezatan aneka sambal khas Solo yang pedasnya nampol. Pesan sekarang! Dijamin Halal 100%</p>
+                </div>
+            </div>
+            
+            <div id="menu-sections-container"></div>
+        </section>
+
+        <section class="mt-16 mb-8">
+            <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-info-circle mr-2 text-pawon-primary"></i> Cara Pemesanan
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="step-card bg-white p-4 rounded-lg shadow-sm border-l-4 border-orange-500 flex items-start space-x-3">
+                    <div class="bg-orange-100 text-orange-700 rounded-full h-8 w-8 flex items-center justify-center flex-shrink-0 font-bold">1</div>
+                    <div>
+                        <p class="text-sm font-semibold">Pilih Menu</p>
+                        <p class="text-xs text-gray-500">Klik tombol '+ Tambah' pada menu favoritmu.</p>
+                    </div>
+                </div>
+                <div class="step-card bg-white p-4 rounded-lg shadow-sm border-l-4 border-orange-500 flex items-start space-x-3">
+                    <div class="bg-orange-100 text-orange-700 rounded-full h-8 w-8 flex items-center justify-center flex-shrink-0 font-bold">2</div>
+                    <div>
+                        <p class="text-sm font-semibold">Isi Data Diri</p>
+                        <p class="text-xs text-gray-500">Lengkapi Nama, Alamat, dan Catatan di bawah ini.</p>
+                    </div>
+                </div>
+                <div class="step-card bg-white p-4 rounded-lg shadow-sm border-l-4 border-orange-500 flex items-start space-x-3">
+                    <div class="bg-orange-100 text-orange-700 rounded-full h-8 w-8 flex items-center justify-center flex-shrink-0 font-bold">3</div>
+                    <div>
+                        <p class="text-sm font-semibold">Kirim via WA</p>
+                        <p class="text-xs text-gray-500">Klik tombol pesan untuk terhubung ke Admin kami.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <aside id="cart-checkout-section" class="w-full bg-pawon-cart p-6 rounded-lg shadow-xl mt-4">
+            <div class="flex justify-between items-center mb-4 border-b pb-2">
+                <h3 class="text-2xl font-bold text-gray-800"><i class="fas fa-shopping-basket mr-2 text-pawon-primary"></i> Keranjang & Checkout</h3>
+            </div>
+            <div id="cart-items" class="space-y-4 overflow-y-auto max-h-96 mb-4">
+                <p id="empty-cart-message" class="text-center text-gray-500 mt-4">Keranjang kosong. Yuk, pilih menu!</p>
+            </div>
+            <div class="pt-4 border-t">
+                <div class="flex justify-between font-bold text-xl mb-4">
+                    <span>Total Harga:</span>
+                    <span id="cart-total" class="text-red-600">Rp 0</span>
+                </div>
+                <div id="checkout-form-container" class="space-y-3 mt-4">
+                    <p class="text-sm font-semibold text-gray-600">Lengkapi data untuk memesan:</p>
+                    <input type="text" id="cust-name" placeholder="Nama Anda" class="w-full p-2 border rounded focus:ring-pawon-primary focus:border-pawon-primary">
+                    <textarea id="cust-address" placeholder="Alamat Pengiriman / Ambil Sendiri" class="w-full p-2 border rounded focus:ring-pawon-primary focus:border-pawon-primary"></textarea>
+                    <textarea id="cust-notes" placeholder="Catatan Tambahan (Contoh: Detail lokasi rumah/kantor)" class="w-full p-2 border rounded focus:ring-pawon-primary focus:border-pawon-primary"></textarea>
+                </div>
+                <button id="checkout-btn" class="w-full bg-pawon-primary hover:opacity-90 text-white font-semibold py-3 rounded-lg mt-4 disabled:bg-gray-400 transition duration-300" disabled>
+                    <i class="fab fa-whatsapp mr-2"></i> Pesan via WhatsApp
+                </button>
+            </div>
+        </aside>
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-10 py-6">
+        <div class="max-w-4xl mx-auto text-center px-4">
+            <p class="font-bold text-lg">Pawon Sakha</p>
+            <p class="text-sm text-gray-300">Kaplingan, Gg. Demak 1, Jebres, Surakarta</p>
+            <p class="mt-4 text-xs">&copy; 2026 Pawon Sakha. All Rights Reserved.</p>
+            <div class="mt-6 border-t border-gray-700 pt-4">
+                <p class="text-xs text-gray-400">
+                    Website ini didukung oleh <a href="https://nusabit.com/" target="_blank" rel="noopener noreferrer" class="hover:underline text-blue-400">NusaBit</a>.
+                </p>
+                <p class="text-xs text-gray-400 mt-1">
+                    Ingin punya website untuk usahamu? <a href="https://nusabit.com/" target="_blank" rel="noopener noreferrer" class="hover:underline text-blue-400">Langganan sekarang!</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="quantity-modal" class="modal fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-11/12 max-w-sm">
+            <h3 id="modal-title" class="text-2xl font-bold mb-2 text-gray-900"></h3>
+            <p id="modal-desc" class="text-sm text-gray-600 mb-4"></p>
+            <div class="mb-4">
+                <label for="modal-quantity" class="block text-sm font-medium text-gray-700 mb-1">Jumlah</label>
+                <input type="number" id="modal-quantity" value="1" min="1" class="w-full p-2 border rounded focus:ring-pawon-primary focus:border-pawon-primary">
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button id="modal-cancel" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">Batal</button>
+                <button id="modal-confirm" class="px-4 py-2 bg-pawon-primary text-white rounded-lg hover:opacity-90">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'api.php'; 
+        const WA_NUMBER = "62895631973831";
+
+        let menuData = [];
+        let allMenuItems = [];
+        let cart = [];
+        let currentModalItemId = null;
+
+        const closedOverlay = document.getElementById('closed-overlay');
+        const mainContent = document.getElementById('main-content');
+        const menuSectionsContainer = document.getElementById('menu-sections-container');
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartTotalDisplay = document.getElementById('cart-total');
+        const cartCountDisplay = document.getElementById('cart-count');
+        const checkoutBtn = document.getElementById('checkout-btn');
+        const checkoutSection = document.getElementById('cart-checkout-section');
+        const toggleCartBtn = document.getElementById('toggle-cart-btn');
+        const emptyCartMessage = document.getElementById('empty-cart-message');
+        
+        const quantityModal = document.getElementById('quantity-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDesc = document.getElementById('modal-desc');
+        const modalQuantityInput = document.getElementById('modal-quantity');
+        const modalCancelBtn = document.getElementById('modal-cancel');
+        const modalConfirmBtn = document.getElementById('modal-confirm');
+
+        const formatRupiah = (number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+
+        function openQuantityModal(itemId) {
+            currentModalItemId = itemId;
+            const item = allMenuItems.find(i => i.id === itemId);
+            if (!item) return;
+            modalTitle.textContent = item.name;
+            modalDesc.textContent = item.description;
+            modalQuantityInput.value = 1;
+            quantityModal.classList.add('flex');
+        }
+
+        function closeQuantityModal() {
+            quantityModal.classList.remove('flex');
+            currentModalItemId = null;
+        }
+
+        function confirmAddToCart() {
+            const quantity = parseInt(modalQuantityInput.value, 10);
+            if (currentModalItemId !== null && quantity > 0) {
+                addToCart(currentModalItemId, quantity);
+            }
+            closeQuantityModal();
+        }
+
+        function renderMenu() {
+            menuSectionsContainer.innerHTML = '';
+            if (menuData.length === 0) {
+                menuSectionsContainer.innerHTML = '<p class="text-center text-gray-500">Menu tidak tersedia saat ini.</p>';
+                return;
+            }
+
+            menuData.forEach(category => {
+                const categoryTitle = document.createElement('h2');
+                categoryTitle.className = "text-2xl md:text-3xl font-bold mb-6 text-gray-800 border-b-2 border-pawon-primary pb-2 mt-8";
+                categoryTitle.textContent = category.category;
+                menuSectionsContainer.appendChild(categoryTitle);
+
+                const itemsGrid = document.createElement('div');
+                itemsGrid.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6";
+                
+                category.items.forEach(item => {
+                    const isAvailable = item.available; 
+                    
+                    let disabledClasses = '';
+                    let statusBadge = '';
+
+                    if (!isAvailable) {
+                        disabledClasses = 'grayscale opacity-70';
+                        statusBadge = `<div class="absolute top-2 right-2 bg-blue-600 text-white text-[10px] font-bold px-2 py-1 rounded-md z-10">SEGERA HADIR</div>`;
+                    }
+
+                    const itemHtml = `
+                        <div class="relative bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition duration-300 flex flex-col ${disabledClasses}">
+                            ${statusBadge}
+                            <img src="${item.img}" alt="${item.name}" class="w-full h-40 object-cover">
+                            <div class="p-4 flex flex-col flex-grow">
+                                <h3 class="text-lg md:text-xl font-bold text-gray-900 flex-grow">${item.name}</h3>
+                                <div class="flex justify-between items-center mt-4">
+                                    <span class="text-base md:text-lg font-extrabold text-red-600">${formatRupiah(item.price)}</span>
+                                    
+                                    ${isAvailable ? 
+                                        `<button onclick="openQuantityModal(${item.id})" class="bg-pawon-primary text-white py-2 px-3 md:px-4 rounded-full hover:bg-opacity-80 transition duration-300 text-sm font-semibold">
+                                            <i class="fas fa-plus mr-1"></i> Tambah
+                                        </button>` : 
+                                        `<span class="text-gray-400 text-xs font-italic">Belum Tersedia</span>`
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    itemsGrid.innerHTML += itemHtml;
+                });
+                menuSectionsContainer.appendChild(itemsGrid);
+            });
+        }
+
+        function addToCart(itemId, quantity) {
+            const item = allMenuItems.find(i => i.id === itemId);
+            if (!item) return;
+            const cartItem = cart.find(c => c.id === itemId);
+            if (cartItem) {
+                cartItem.quantity += quantity;
+            } else {
+                cart.push({ id: item.id, name: item.name, price: item.price, quantity: quantity });
+            }
+            updateCartDisplay();
+        }
+
+        function changeQuantity(itemId, change) {
+            const cartIndex = cart.findIndex(c => c.id === itemId);
+            if (cartIndex > -1) {
+                cart[cartIndex].quantity += change;
+                if (cart[cartIndex].quantity <= 0) {
+                    cart.splice(cartIndex, 1);
+                }
+                updateCartDisplay();
+            }
+        }
+
+        function updateCartDisplay() {
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+            let totalItems = 0;
+            if (cart.length === 0) {
+                emptyCartMessage.style.display = 'block';
+                checkoutBtn.disabled = true;
+            } else {
+                emptyCartMessage.style.display = 'none';
+                checkoutBtn.disabled = false;
+                cart.forEach(item => {
+                    total += item.price * item.quantity;
+                    totalItems += item.quantity;
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'flex items-center justify-between border-b pb-2';
+                    itemElement.innerHTML = 
+                        `<div class="flex-grow pr-2">
+                            <p class="font-semibold text-sm">${item.name}</p>
+                            <p class="text-xs text-gray-500">${formatRupiah(item.price)}</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="changeQuantity(${item.id}, -1)" class="w-6 h-6 bg-red-100 text-red-600 rounded-full text-xs flex items-center justify-center"><i class="fas fa-minus"></i></button>
+                            <span class="font-bold text-sm w-4 text-center">${item.quantity}</span>
+                            <button onclick="changeQuantity(${item.id}, 1)" class="w-6 h-6 bg-green-100 text-green-600 rounded-full text-xs flex items-center justify-center"><i class="fas fa-plus"></i></button>
+                        </div>
+                    `;
+                    cartItemsContainer.appendChild(itemElement);
+                });
+            }
+            cartTotalDisplay.textContent = formatRupiah(total);
+            cartCountDisplay.textContent = totalItems;
+        }
+
+        function checkout() {
+            const customerName = document.getElementById('cust-name').value;
+            const customerAddress = document.getElementById('cust-address').value;
+            const customerNotes = document.getElementById('cust-notes').value;
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            if (!customerName.trim() || !customerAddress.trim()) {
+                alert("Mohon lengkapi Nama dan Alamat sebelum memesan.");
+                return;
+            }
+            let message = `*PESANAN BARU - PAWON SAKHA*\nby nusabit.com\n=========================\n*Detail Pemesan:*\nNama: *${customerName}*\nAlamat/Keterangan: *${customerAddress}*`;
+            if (customerNotes.trim()) { message += `\nCatatan: *${customerNotes}*`; }
+            message += `\n=========================\n\n*Rincian Pesanan:*\n`;
+            cart.forEach(item => {
+                message += `*- ${item.name}*\n  (${item.quantity} x ${formatRupiah(item.price)}) = *${formatRupiah(item.price * item.quantity)}*\n`;
+            });
+            message += `\n*TOTAL PESANAN: ${formatRupiah(total)}*\n\n_Mohon ditunggu konfirmasinya. Terima kasih!_\n`;
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${WA_NUMBER}?text=${encodedMessage}`;
+            window.open(whatsappUrl, '_blank');
+        }
+        
+        async function initializeApp() {
+            try {
+                const settingsResponse = await fetch(`${API_BASE_URL}?action=get_settings`);
+                if (!settingsResponse.ok) throw new Error('Gagal mengambil status restoran.');
+                const settings = await settingsResponse.json();
+
+                if (settings.restaurantOpen) {
+                    closedOverlay.classList.remove('flex');
+                    mainContent.style.display = 'block';
+
+                    const menuResponse = await fetch(`${API_BASE_URL}?action=get_menu`);
+                    if (!menuResponse.ok) throw new Error('Gagal memuat menu.');
+
+                    menuData = await menuResponse.json();
+                    allMenuItems = menuData.flatMap(category => category.items);
+                    renderMenu();
+                } else {
+                    closedOverlay.classList.add('flex');
+                    mainContent.style.display = 'none';
+                }
+            } catch (error) {
+                console.error("Initialization Error:", error);
+                alert(`Tidak dapat terhubung ke server. Pastikan file api.php ada di lokasi yang benar.`);
+                closedOverlay.classList.add('flex');
+                mainContent.style.display = 'none';
+            }
+            updateCartDisplay();
+        }
+        
+        toggleCartBtn.addEventListener('click', () => checkoutSection.scrollIntoView({ behavior: 'smooth' }));
+        checkoutBtn.addEventListener('click', checkout);
+        modalCancelBtn.addEventListener('click', closeQuantityModal);
+        modalConfirmBtn.addEventListener('click', confirmAddToCart);
+        quantityModal.addEventListener('click', (e) => {
+            if (e.target.id === 'quantity-modal') closeQuantityModal();
+        });
+
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+</body>
+</html>
