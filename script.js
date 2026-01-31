@@ -269,7 +269,10 @@ document.addEventListener('DOMContentLoaded', function () {
         { id: 9, name: 'Nasi Pulen Kemliket', price: 3000 },
         { id: 10, name: 'Tahu-Tahu Krispi', price: 2000 },
         { id: 11, name: 'Nikmat Kopi', price: 10000 },
-        { id: 12, name: 'Kopi Susu', price: 15000 }
+        { id: 12, name: 'Palm Sugar', price: 10000 },
+        { id: 13, name: 'Iced Latte', price: 10000 },
+        { id: 14, name: 'Iced Almond', price: 10000 },
+        { id: 15, name: 'Chocopresso', price: 10000 }
     ];
 
     // Menu Data (sistem lama - tidak dipakai lagi)
