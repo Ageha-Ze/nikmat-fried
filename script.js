@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', function () {
         { id: 12, name: 'Palm Sugar', price: 10000 },
         { id: 13, name: 'Iced Latte', price: 10000 },
         { id: 14, name: 'Iced Almond', price: 10000 },
-        { id: 15, name: 'cocopresso', price: 10000 }
+        { id: 15, name: 'Cocopresso', price: 10000 }
     ];
 
     // Menu Data (sistem lama - tidak dipakai lagi)
