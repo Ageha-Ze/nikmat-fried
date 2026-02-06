@@ -9,12 +9,39 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initialize other components
     initHeroSlider();
-    initNavigation();
-    initHamburger();
-    initScrollAnimation();
-    initOrderModal();
-    initCatalogCart();
 });
+
+// Initialize hero slider
+function initHeroSlider() {
+    const heroSlides = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.hero-dots .dot');
+    let currentSlide = 0;
+
+    function showSlide(index) {
+        heroSlides.forEach((slide, i) => {
+            slide.classList.toggle('active', i === index);
+        });
+
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
+        });
+
+        currentSlide = index;
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % heroSlides.length;
+        showSlide(currentSlide);
+    }
+
+    // Auto slide every 5 seconds
+    setInterval(nextSlide, 5000);
+
+    // Click dots to change slides
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => showSlide(index));
+    });
+}
 
 // Loading Screen Function
 function initLoadingScreen() {
@@ -268,11 +295,18 @@ document.addEventListener('DOMContentLoaded', function () {
         { id: 8, name: 'Ayam Krispi Original', price: 7500 },
         { id: 9, name: 'Nasi Pulen Kemliket', price: 3000 },
         { id: 10, name: 'Tahu-Tahu Krispi', price: 2000 },
-        { id: 11, name: 'Nikmat Kopi', price: 10000 },
-        { id: 12, name: 'Palm Sugar', price: 10000 },
+        { id: 11, name: 'Nikmat Kopi', price: 7000 },
+        { id: 12, name: 'Palm Sugar', price: 13000 },
         { id: 13, name: 'Iced Latte', price: 10000 },
-        { id: 14, name: 'Iced Almond', price: 10000 },
-        { id: 15, name: 'Cocopresso', price: 10000 }
+        { id: 14, name: 'Iced Almond', price: 15000 },
+        { id: 15, name: 'Butterscotch', price: 15000 },
+        { id: 16, name: 'Mocca', price: 13000 },
+        { id: 17, name: 'Salted Caramel', price: 15000 },
+        { id: 18, name: 'Matcha Greentea', price: 15000 },
+        { id: 19, name: 'Taro', price: 10000 },
+        { id: 20, name: 'Coklat', price: 10000 },
+        { id: 21, name: 'Matcha GT', price: 10000 },
+        { id: 22, name: 'Cocopresso', price: 13000 }
     ];
 
     // Menu Data (sistem lama - tidak dipakai lagi)
@@ -509,14 +543,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Add to Catalog Cart
     window.addToCatalogCart = function (itemId) {
-        const menuItem = catalogMenuItems.find(item => item.id === itemId);
+        const menuItem = catalogMenuItems.find(item => item.id == itemId); // Use == instead of ===
 
         if (!menuItem) {
             console.error('Menu item not found:', itemId);
             return;
         }
 
-        const existingItem = catalogCart.find(item => item.id === itemId);
+        const existingItem = catalogCart.find(item => item.id == itemId); // Use == instead of ===
 
         if (existingItem) {
             existingItem.quantity += 1;
@@ -537,6 +571,65 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Show notification
         showNotification(`${menuItem.name} berhasil ditambahkan ke keranjang!`);
+    };
+
+    // Add Stovetop Espresso to Catalog Cart
+    window.addStovetopEspresso = function (drinkItemId) {
+        const drinkItem = catalogCart.find(item => item.id == drinkItemId); // Use == instead of ===
+
+        if (!drinkItem) {
+            // If drink is not in cart yet, add it first
+            addToCatalogCart(drinkItemId);
+            // Wait a moment for cart to update, then try again
+            setTimeout(() => {
+                addStovetopEspresso(drinkItemId);
+            }, 100);
+            return;
+        }
+
+        // Check if this drink already has stovetop espresso
+        const existingStovetop = catalogCart.find(item =>
+            item.id == `${drinkItemId}-stovetop` && item.name.includes('Stovetop Espresso')
+        );
+
+        if (existingStovetop) {
+            existingStovetop.quantity += 1;
+        } else {
+            catalogCart.push({
+                id: `${drinkItemId}-stovetop`,
+                name: `${drinkItem.name} + Stovetop Espresso`,
+                price: 3000,
+                quantity: 1,
+                parentItemId: drinkItemId
+            });
+        }
+
+        // Save cart to localStorage
+        localStorage.setItem('catalogCart', JSON.stringify(catalogCart));
+        updateCatalogCartDisplay();
+        showNotification('Stovetop Espresso berhasil ditambahkan!');
+    };
+
+    // Remove Stovetop Espresso from Catalog Cart
+    window.removeStovetopEspresso = function (drinkItemId) {
+        const stovetopIndex = catalogCart.findIndex(item =>
+            item.id === `${drinkItemId}-stovetop` && item.name.includes('Stovetop Espresso')
+        );
+
+        if (stovetopIndex > -1) {
+            catalogCart.splice(stovetopIndex, 1);
+            // Save cart to localStorage
+            localStorage.setItem('catalogCart', JSON.stringify(catalogCart));
+            updateCatalogCartDisplay();
+            showNotification('Stovetop Espresso berhasil dihapus!');
+        }
+    };
+
+    // Check if drink has stovetop espresso
+    window.hasStovetopEspresso = function (drinkItemId) {
+        return catalogCart.some(item =>
+            item.id === `${drinkItemId}-stovetop` && item.name.includes('Stovetop Espresso')
+        );
     };
 
     // Update Catalog Cart Display
@@ -583,6 +676,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     const cartItem = document.createElement('div');
                     cartItem.className = 'cart-item';
+                    // Properly escape item.id for use in onclick handlers
+                    const itemIdEscaped = typeof item.id === 'string' ? `'${item.id}'` : item.id;
                     cartItem.innerHTML = `
                         <div class="cart-item-info">
                             <div class="cart-item-name">${item.name}</div>
@@ -590,11 +685,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         </div>
                         <div class="cart-item-controls">
                             <div class="quantity-control-cart">
-                                <button onclick="changeCatalogCartQuantity(${item.id}, -1)">−</button>
+                                <button onclick="changeCatalogCartQuantity(${itemIdEscaped}, -1)">−</button>
                                 <span>${item.quantity}</span>
-                                <button onclick="changeCatalogCartQuantity(${item.id}, 1)">+</button>
+                                <button onclick="changeCatalogCartQuantity(${itemIdEscaped}, 1)">+</button>
                             </div>
-                            <button onclick="removeFromCatalogCart(${item.id})" class="btn-remove">
+                            <button onclick="removeFromCatalogCart(${itemIdEscaped})" class="btn-remove">
                                 <span>🗑️</span> Hapus
                             </button>
                         </div>
@@ -610,7 +705,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Change Catalog Cart Quantity
     window.changeCatalogCartQuantity = function (itemId, change) {
-        const cartItem = catalogCart.find(item => item.id === itemId);
+        const cartItem = catalogCart.find(item => item.id == itemId); // Use == instead of === to match both string and number
         if (cartItem) {
             cartItem.quantity += change;
             if (cartItem.quantity < 1) {
@@ -623,11 +718,29 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
+    // Change Stovetop Espresso Quantity
+    window.changeStovetopQuantity = function (drinkItemId, change) {
+        const stovetopItem = catalogCart.find(item =>
+            item.id === `${drinkItemId}-stovetop` && item.name.includes('Stovetop Espresso')
+        );
+
+        if (stovetopItem) {
+            stovetopItem.quantity += change;
+            if (stovetopItem.quantity < 1) {
+                removeStovetopEspresso(drinkItemId);
+            } else {
+                // Save cart to localStorage
+                localStorage.setItem('catalogCart', JSON.stringify(catalogCart));
+                updateCatalogCartDisplay();
+            }
+        }
+    };
+
     // Remove from Catalog Cart
     window.removeFromCatalogCart = function (itemId) {
-        const item = catalogCart.find(i => i.id === itemId);
+        const item = catalogCart.find(i => i.id == itemId); // Use == instead of === to match both string and number
         if (item && confirm(`Hapus ${item.name} dari keranjang?`)) {
-            catalogCart = catalogCart.filter(item => item.id !== itemId);
+            catalogCart = catalogCart.filter(item => item.id != itemId); // Use != instead of !==
             // Save cart to localStorage
             localStorage.setItem('catalogCart', JSON.stringify(catalogCart));
             updateCatalogCartDisplay();
@@ -658,10 +771,36 @@ document.addEventListener('DOMContentLoaded', function () {
         let total = 0;
         let itemNumber = 1;
 
+        // Create a set to track which items are stovetop add-ons
+        const stovetopItems = new Set();
         catalogCart.forEach(item => {
+            if (item.name.includes('Stovetop Espresso')) {
+                stovetopItems.add(item.id);
+            }
+        });
+
+        catalogCart.forEach((item, index) => {
             const itemTotal = item.price * item.quantity;
             total += itemTotal;
-            message += `${itemNumber}. ${item.name} - Jumlah: ${item.quantity} pcs - Harga Satuan: ${formatRupiah(item.price)}\n`;
+
+            // Skip if this is a stovetop espresso (will be added to parent item)
+            if (item.name.includes('Stovetop Espresso')) {
+                return;
+            }
+
+            // Display regular item
+            message += `${itemNumber}. ${item.name} - Jumlah: ${item.quantity} pcs - Harga Satuan: ${formatRupiah(item.price)}`;
+
+            // Check if this item has a stovetop espresso add-on
+            const stovetopAddon = catalogCart.find(cartItem =>
+                cartItem.id === `${item.id}-stovetop` && cartItem.name.includes('Stovetop Espresso')
+            );
+
+            if (stovetopAddon) {
+                message += `\n   dengan Stovetop Espresso - Jumlah: ${stovetopAddon.quantity} pcs - Harga Satuan: ${formatRupiah(stovetopAddon.price)}`;
+            }
+
+            message += `\n`;
             itemNumber++;
         });
 
@@ -697,11 +836,11 @@ document.addEventListener('DOMContentLoaded', function () {
             catalogCart = [];
             localStorage.setItem('catalogCart', JSON.stringify(catalogCart));
             updateCatalogCartDisplay();
-            
+
             // Clear customer information fields
             document.getElementById('customer-name').value = '';
             document.getElementById('customer-address').value = '';
-            
+
             showNotification('Keranjang berhasil dikosongkan');
         }
     };
